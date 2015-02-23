@@ -1,0 +1,60 @@
+<div class="row" class="listing-header" id="listing-header" data-group-id="<%=@group_id%>">
+
+  <div class="alert alert-success" role="alert">Click on the check box across a time slot to accept it</div>
+
+<!--   Filter panel and button
+ -->
+  <div class="col-md-12 calendar-row">
+     <button type="button" class="btn btn-default" id="add_button">Add Your Availabilty</button>
+  </div>
+</div>
+
+<!-- initially this is invisible -->
+<div class="row listing-add-new field-margin" style="display: none;"  id="listing-add-new">
+
+
+  <div class="panel panel-default">
+  <div class="panel-body">
+      <div class="col-md-12 calendar-row">
+        <label for="inputEmail" >Enter Date/Time:</label>
+        <!-- data-time-format="H:i:s" -->
+        <input  id="schedule-time-inputs" type="text"  placeHolder="mm/dd HH:MM pm"/>
+        <label class="left-margin" for="inputEmail" >Agenda:</label>
+         <input id="schedule-agenda-inputs" type="text"  placeHolder="optional"/>
+         <button type="button" class="btn btn-default left-margin" id="submit_schedule_button">Submit</button>
+      </div>
+
+  </div>
+</div>
+
+</div>
+
+<div class="row">
+  <!-- Date Listing -->
+  <% @listings.each do |date_of_week, studentschedules| %>
+  <div class="col-md-3 calendar-row">
+      <div class="calendar-day-header"><h4><%=date_of_week%></h4></div>
+      <%studentschedules.each do |studentschedule| %>
+        <div class="calendar-listing" id="calendar-listing-<%=studentschedule.id%>" data-id="<%=studentschedule.id%>" data-details="<%=studentschedule.student.fname%> <%=studentschedule.student.lname%> @ <%=studentschedule.schedule.formatTimeSlot%>">
+        <span class="schedule_buttons">
+             <% if current_user.id == studentschedule.student.id %>
+            <button type="button" class="delete_schedule glyphicon glyphicon-remove" aria-label="Close"><span aria-hidden="true"></span></button>
+          <%else%>
+            <button type="button" class="accept_schedule glyphicon glyphicon-ok"  aria-label="Accept"><span aria-hidden="true"></span></button>
+
+          <%end%>
+        </span>
+
+          <%=studentschedule.student.fname%> <%=studentschedule.student.lname%>
+          <%=studentschedule.schedule.formatTimeSlot%>
+          <%if studentschedule.schedule.agenda %>
+             <span>(<%=studentschedule.schedule.agenda%>)</span>
+          <%end%>
+        </span>
+        </div>
+
+      <%end%>
+
+  </div>
+  <%end%>
+</div>
